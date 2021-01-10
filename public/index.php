@@ -15,7 +15,7 @@ $container['upload_directory'] = __DIR__ . '/imagenes';
 // Customer routes
 require '../src/routes/oauth.php';
 require '../src/routes/juego.php';
-require '../src/routes/siguiente.php';
+require '../src/routes/activar.php';
 require '../src/routes/registro.php';
 require '../src/routes/actividad.php';
 require '../src/routes/cors.php';
