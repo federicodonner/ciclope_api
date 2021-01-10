@@ -2,10 +2,10 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-$app->get('/api/juego', function (Request $request, Response $response) {
+$app->get('/api/ciclope_juego', function (Request $request, Response $response) {
     try {
         // Si estoy acá es porque los campos del request están bien
-        $sql = "SELECT * FROM juego";
+        $sql = "SELECT * FROM ciclope_juego";
 
         $db = new db();
         $db = $db->connect();
@@ -21,11 +21,11 @@ $app->get('/api/juego', function (Request $request, Response $response) {
 })->add($authenticate);
 
 
-$app->get('/api/juego/{id}', function (Request $request, Response $response) {
+$app->get('/api/ciclope_juego/{id}', function (Request $request, Response $response) {
     try {
         $id = $request->getAttribute('id');
 
-        $sql = "SELECT * FROM juego WHERE id = $id";
+        $sql = "SELECT * FROM ciclope_juego WHERE id = $id";
 
         $db = new db();
         $db = $db->connect();
@@ -39,13 +39,13 @@ $app->get('/api/juego/{id}', function (Request $request, Response $response) {
 
         $respuesta=$juegos[0];
 
-        $sql = "SELECT * FROM actividad WHERE juego = $id ORDER BY numero";
+        $sql = "SELECT * FROM ciclope_actividad WHERE juego = $id ORDER BY numero";
         $stmt = $db->query($sql);
         $actividades = $stmt->fetchAll(PDO::FETCH_OBJ);
 
         $respuesta->actividades = $actividades;
 
-        $sql = "SELECT * FROM participante WHERE juego = $id";
+        $sql = "SELECT * FROM ciclope_participante WHERE juego = $id";
         $stmt = $db->query($sql);
         $participantes = $stmt->fetchAll(PDO::FETCH_OBJ);
 
@@ -62,7 +62,7 @@ $app->get('/api/juego/{id}', function (Request $request, Response $response) {
 
 
 // Creación de juego nuevo
-$app->post('/api/juego', function (Request $request, Response $response) {
+$app->post('/api/ciclope_juego', function (Request $request, Response $response) {
     try {
         $nombre = $request->getParam('nombre');
         $texto_espera = $request->getParam('textoEspera');
@@ -74,7 +74,7 @@ $app->post('/api/juego', function (Request $request, Response $response) {
         }
 
         // Si estoy acá es porque los campos del request están bien
-        $sql = "INSERT INTO juego (nombre, hash, texto_espera) VALUES (:nombre, :hash, :texto_espera)";
+        $sql = "INSERT INTO ciclope_juego (nombre, hash, texto_espera) VALUES (:nombre, :hash, :texto_espera)";
 
         $db = new db();
         $db = $db->connect();
@@ -89,7 +89,7 @@ $app->post('/api/juego', function (Request $request, Response $response) {
         $stmt->execute();
 
         // Obtiene el id de la droga recién creada para devolverla
-        $sql="SELECT * FROM juego WHERE id = LAST_INSERT_ID()";
+        $sql="SELECT * FROM ciclope_juego WHERE id = LAST_INSERT_ID()";
         $stmt = $db->query($sql);
         $juegos = $stmt->fetchAll(PDO::FETCH_OBJ);
 
@@ -107,7 +107,7 @@ $app->post('/api/juego', function (Request $request, Response $response) {
 
 
 // Verificar que exista el juego por hash
-$app->get('/api/juegohash/{hash}', function (Request $request, Response $response) {
+$app->get('/api/ciclope_juegohash/{hash}', function (Request $request, Response $response) {
     try {
         // Obtiene el hash de la invocación
         $juego_hash = $request->getAttribute('hash');
@@ -117,7 +117,7 @@ $app->get('/api/juegohash/{hash}', function (Request $request, Response $respons
             return messageResponse($response, 'Debes especificar un hash de juego.', 403);
         }
 
-        $sql="SELECT * FROM juego WHERE hash = '$juego_hash'";
+        $sql="SELECT * FROM ciclope_juego WHERE hash = '$juego_hash'";
 
         $db = new db();
         $db = $db->connect();

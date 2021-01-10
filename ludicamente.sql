@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jan 10, 2021 at 03:14 AM
+-- Generation Time: Jan 10, 2021 at 09:38 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.4.2
 
@@ -17,17 +17,17 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ciclope`
+-- Database: `ludicamente`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `actividad`
+-- Table structure for table `ciclope_actividad`
 --
 
-DROP TABLE IF EXISTS `actividad`;
-CREATE TABLE `actividad` (
+DROP TABLE IF EXISTS `ciclope_actividad`;
+CREATE TABLE `ciclope_actividad` (
   `id` int(11) NOT NULL,
   `juego` int(11) NOT NULL,
   `numero` int(11) NOT NULL,
@@ -39,15 +39,30 @@ CREATE TABLE `actividad` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `juego`
+-- Table structure for table `ciclope_juego`
 --
 
-DROP TABLE IF EXISTS `juego`;
-CREATE TABLE `juego` (
+DROP TABLE IF EXISTS `ciclope_juego`;
+CREATE TABLE `ciclope_juego` (
   `id` int(11) NOT NULL,
   `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `hash` varchar(20) NOT NULL,
   `texto_espera` text CHARACTER SET utf8 COLLATE utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ciclope_participante`
+--
+
+DROP TABLE IF EXISTS `ciclope_participante`;
+CREATE TABLE `ciclope_participante` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `participa` tinyint(4) NOT NULL,
+  `juego` int(11) NOT NULL,
+  `activo` smallint(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -62,21 +77,6 @@ CREATE TABLE `login` (
   `usuario` int(11) NOT NULL,
   `token` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `login_dttm` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `participante`
---
-
-DROP TABLE IF EXISTS `participante`;
-CREATE TABLE `participante` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `participa` tinyint(4) NOT NULL,
-  `juego` int(11) NOT NULL,
-  `activo` smallint(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -98,17 +98,24 @@ CREATE TABLE `usuario` (
 --
 
 --
--- Indexes for table `actividad`
+-- Indexes for table `ciclope_actividad`
 --
-ALTER TABLE `actividad`
+ALTER TABLE `ciclope_actividad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `actividad_juego` (`juego`);
 
 --
--- Indexes for table `juego`
+-- Indexes for table `ciclope_juego`
 --
-ALTER TABLE `juego`
+ALTER TABLE `ciclope_juego`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ciclope_participante`
+--
+ALTER TABLE `ciclope_participante`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `participante_juego` (`juego`);
 
 --
 -- Indexes for table `login`
@@ -116,13 +123,6 @@ ALTER TABLE `juego`
 ALTER TABLE `login`
   ADD PRIMARY KEY (`id`),
   ADD KEY `login_usuario` (`usuario`);
-
---
--- Indexes for table `participante`
---
-ALTER TABLE `participante`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `participante_juego` (`juego`);
 
 --
 -- Indexes for table `usuario`
@@ -135,27 +135,27 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT for table `actividad`
+-- AUTO_INCREMENT for table `ciclope_actividad`
 --
-ALTER TABLE `actividad`
+ALTER TABLE `ciclope_actividad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `juego`
+-- AUTO_INCREMENT for table `ciclope_juego`
 --
-ALTER TABLE `juego`
+ALTER TABLE `ciclope_juego`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ciclope_participante`
+--
+ALTER TABLE `ciclope_participante`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `participante`
---
-ALTER TABLE `participante`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -169,22 +169,22 @@ ALTER TABLE `usuario`
 --
 
 --
--- Constraints for table `actividad`
+-- Constraints for table `ciclope_actividad`
 --
-ALTER TABLE `actividad`
-  ADD CONSTRAINT `actividad_juego` FOREIGN KEY (`juego`) REFERENCES `juego` (`id`);
+ALTER TABLE `ciclope_actividad`
+  ADD CONSTRAINT `actividad_juego` FOREIGN KEY (`juego`) REFERENCES `ciclope_juego` (`id`);
+
+--
+-- Constraints for table `ciclope_participante`
+--
+ALTER TABLE `ciclope_participante`
+  ADD CONSTRAINT `participante_juego` FOREIGN KEY (`juego`) REFERENCES `ciclope_juego` (`id`);
 
 --
 -- Constraints for table `login`
 --
 ALTER TABLE `login`
   ADD CONSTRAINT `login_usuario` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`);
-
---
--- Constraints for table `participante`
---
-ALTER TABLE `participante`
-  ADD CONSTRAINT `participante_juego` FOREIGN KEY (`juego`) REFERENCES `juego` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -3,7 +3,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // Creación de actividad nueva
-$app->post('/api/actividad', function (Request $request, Response $response) {
+$app->post('/api/ciclope_actividad', function (Request $request, Response $response) {
     try {
         $juego = $request->getParam('juego');
         $numero = $request->getParam('numero');
@@ -18,7 +18,7 @@ $app->post('/api/actividad', function (Request $request, Response $response) {
         }
 
         // Verifica que el juego especificado exista
-        $sql = "SELECT id FROM juego WHERE id = $juego";
+        $sql = "SELECT id FROM ciclope_juego WHERE id = $juego";
         $db = new db();
         $db = $db->connect();
         $stmt = $db->query($sql);
@@ -51,7 +51,7 @@ $app->post('/api/actividad', function (Request $request, Response $response) {
         }
 
         // Si estoy acá es porque los campos del request están bien
-        $sql = "INSERT INTO actividad (juego, numero, imagen_activo, texto_activo, texto_inactivo) VALUES (:juego, :numero, :imagen_activo, :texto_activo, :texto_inactivo)";
+        $sql = "INSERT INTO ciclope_actividad (juego, numero, imagen_activo, texto_activo, texto_inactivo) VALUES (:juego, :numero, :imagen_activo, :texto_activo, :texto_inactivo)";
 
         $db = new db();
         $db = $db->connect();
@@ -66,7 +66,7 @@ $app->post('/api/actividad', function (Request $request, Response $response) {
         $stmt->execute();
 
         // Obtiene el id de la droga recién creada para devolverla
-        $sql="SELECT * FROM actividad WHERE id = LAST_INSERT_ID()";
+        $sql="SELECT * FROM ciclope_actividad WHERE id = LAST_INSERT_ID()";
         $stmt = $db->query($sql);
         $actividades = $stmt->fetchAll(PDO::FETCH_OBJ);
 
@@ -82,7 +82,7 @@ $app->post('/api/actividad', function (Request $request, Response $response) {
 
 
 // Edición de actividad
-$app->put('/api/actividad/{id}', function (Request $request, Response $response) {
+$app->put('/api/ciclope_actividad/{id}', function (Request $request, Response $response) {
     try {
         $id = $request->getAttribute('id');
         $juego = $request->getParam('juego');
@@ -91,7 +91,7 @@ $app->put('/api/actividad/{id}', function (Request $request, Response $response)
         $texto_inactivo = $request->getParam('textoInactivo');
 
 
-        $sql = "SELECT * FROM actividad WHERE id = $id";
+        $sql = "SELECT * FROM ciclope_actividad WHERE id = $id";
         $db = new db();
         $db = $db->connect();
         $stmt = $db->query($sql);
@@ -131,7 +131,7 @@ $app->put('/api/actividad/{id}', function (Request $request, Response $response)
 
 
         // Si estoy acá es porque los campos del request están bien
-        $sql = "UPDATE actividad SET juego = :juego, numero = :numero, texto_activo = :texto_activo, texto_inactivo = :texto_inactivo WHERE id = $id";
+        $sql = "UPDATE ciclope_actividad SET juego = :juego, numero = :numero, texto_activo = :texto_activo, texto_inactivo = :texto_inactivo WHERE id = $id";
 
 
 
@@ -143,7 +143,7 @@ $app->put('/api/actividad/{id}', function (Request $request, Response $response)
         $stmt->bindParam(':texto_inactivo', $texto_inactivo_ingresar);
         $stmt->execute();
 
-        $sql = "SELECT * FROM actividad WHERE id = $id";
+        $sql = "SELECT * FROM ciclope_actividad WHERE id = $id";
         $stmt = $db->query($sql);
         $actividades = $stmt->fetchAll(PDO::FETCH_OBJ);
 

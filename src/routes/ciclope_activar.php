@@ -3,12 +3,12 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // Pone a todos los jugdaores del juego a esperar
-$app->get('/api/esperando/{juego_id}', function (Request $request, Response $response) {
+$app->get('/api/ciclope_esperando/{juego_id}', function (Request $request, Response $response) {
     try {
 
         // Verifica que el juego exista en la base de datos
         $juego_id = $request->getAttribute('juego_id');
-        $sql="SELECT hash FROM juego WHERE id = $juego_id";
+        $sql="SELECT hash FROM ciclope_juego WHERE id = $juego_id";
 
         $db = new db();
         $db = $db->connect();
@@ -48,11 +48,11 @@ $app->get('/api/esperando/{juego_id}', function (Request $request, Response $res
 
 
 // Activa una actividad
-$app->get('/api/activar/{id}', function (Request $request, Response $response) {
+$app->get('/api/ciclope_activar/{id}', function (Request $request, Response $response) {
     try {
         $id = $request->getAttribute('id');
 
-        $sql = "SELECT * FROM actividad WHERE id = $id";
+        $sql = "SELECT * FROM ciclope_actividad WHERE id = $id";
 
         $db = new db();
         $db = $db->connect();
@@ -70,7 +70,7 @@ $app->get('/api/activar/{id}', function (Request $request, Response $response) {
 
         // Necesita el hash del juego para saber por qué canal enviar el mensaje
         $juego_id = $actividad ->juego;
-        $sql="SELECT hash FROM juego WHERE id = $juego_id";
+        $sql="SELECT hash FROM ciclope_juego WHERE id = $juego_id";
         $stmt = $db->query($sql);
         $juegos = $stmt->fetchAll(PDO::FETCH_OBJ);
 
@@ -83,7 +83,7 @@ $app->get('/api/activar/{id}', function (Request $request, Response $response) {
         // Si enceuntra el juego, guarda el hash para utilizar como canal
         $juego_hash = $juegos[0]->hash;
 
-        $sql="SELECT id FROM participante WHERE participa = 1 AND activo = 1 ORDER BY RAND() LIMIT 1";
+        $sql="SELECT id FROM ciclope_participante WHERE participa = 1 AND activo = 1 ORDER BY RAND() LIMIT 1";
         $stmt = $db->query($sql);
         $actores = $stmt->fetchAll(PDO::FETCH_OBJ);
 

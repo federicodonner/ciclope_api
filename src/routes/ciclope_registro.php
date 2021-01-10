@@ -3,7 +3,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // Registro de participantes para presentación
-$app->post('/api/registro', function (Request $request, Response $response) {
+$app->post('/api/ciclope_registro', function (Request $request, Response $response) {
     try {
         $nombre = $request->getParam('nombre');
         $participa = $request->getParam('participa');
@@ -21,7 +21,7 @@ $app->post('/api/registro', function (Request $request, Response $response) {
         }
 
         // Si tiene juego hash, verifica que exista
-        $sql = "SELECT id FROM juego WHERE hash = '$juego_hash'";
+        $sql = "SELECT id FROM ciclope_juego WHERE hash = '$juego_hash'";
         $db = new db();
         $db = $db->connect();
         $stmt = $db->query($sql);
@@ -40,7 +40,7 @@ $app->post('/api/registro', function (Request $request, Response $response) {
         }
 
         // Si estoy acá es porque los campos del request están bien
-        $sql = "INSERT INTO participante (nombre, participa, juego, activo) VALUES (:nombre, :participa, :juego, :activo)";
+        $sql = "INSERT INTO ciclope_participante (nombre, participa, juego, activo) VALUES (:nombre, :participa, :juego, :activo)";
 
         $stmt = $db->prepare($sql);
 
@@ -53,7 +53,7 @@ $app->post('/api/registro', function (Request $request, Response $response) {
         $stmt->execute();
 
         // Obtiene el id de la droga recién creada para devolverla
-        $sql="SELECT * FROM participante WHERE id = LAST_INSERT_ID()";
+        $sql="SELECT * FROM ciclope_participante WHERE id = LAST_INSERT_ID()";
         $stmt = $db->query($sql);
         $participantes = $stmt->fetchAll(PDO::FETCH_OBJ);
 
