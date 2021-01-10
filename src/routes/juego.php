@@ -24,7 +24,7 @@ $app->get('/api/juego', function (Request $request, Response $response) {
 $app->get('/api/juego/{id}', function (Request $request, Response $response) {
     try {
         $id = $request->getAttribute('id');
-        // Si estoy acá es porque los campos del request están bien
+
         $sql = "SELECT * FROM juego WHERE id = $id";
 
         $db = new db();
