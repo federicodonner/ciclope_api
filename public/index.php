@@ -6,13 +6,18 @@ require '../vendor/autoload.php';
 require '../src/config/db.php';
 require '../src/auxiliares/funciones.php';
 
-
 $app = new \Slim\App;
-// require '../src/middleware/authentication.php';
+require '../src/middleware/authentication.php';
+
+$container = $app->getContainer();
+$container['upload_directory'] = __DIR__ . '/imagenes';
 
 // Customer routes
+require '../src/routes/oauth.php';
+require '../src/routes/juego.php';
 require '../src/routes/siguiente.php';
 require '../src/routes/registro.php';
+require '../src/routes/actividad.php';
 require '../src/routes/cors.php';
 
 
