@@ -31,6 +31,12 @@ $app->get('/api/juego/{id}', function (Request $request, Response $response) {
         $db = $db->connect();
         $stmt = $db->query($sql);
         $juegos = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        if ($juegos == null) {
+            $db = null;
+            return messageResponse($response, 'Juego no encontrado, verifica el identificador e intenta nuevamente.', 404);
+        }
+
         $respuesta=$juegos[0];
 
         $sql = "SELECT * FROM actividad WHERE juego = $id ORDER BY numero";
@@ -96,3 +102,40 @@ $app->post('/api/juego', function (Request $request, Response $response) {
         return messageResponse($response, $e->getMessage(), 500);
     }
 })->add($authenticate);
+
+
+
+
+// Verificar que exista el juego por hash
+$app->get('/api/juegohash/{hash}', function (Request $request, Response $response) {
+    try {
+        // Obtiene el hash de la invocación
+        $juego_hash = $request->getAttribute('hash');
+
+        if (!$juego_hash) {
+            $db = null;
+            return messageResponse($response, 'Debes especificar un hash de juego.', 403);
+        }
+
+        $sql="SELECT * FROM juego WHERE hash = '$juego_hash'";
+
+        $db = new db();
+        $db = $db->connect();
+
+        $stmt = $db->query($sql);
+        $juegos = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        if ($juegos == null) {
+            $db = null;
+            return messageResponse($response, 'Juego no encontrado, verifica el hash e intenta nuevamente.', 404);
+        }
+
+        $juego = $juegos[0];
+
+        $db=null;
+        return dataResponse($response, $juego, 200);
+    } catch (PDOException $e) {
+        $db = null;
+        return messageResponse($response, $e->getMessage(), 500);
+    }
+});
