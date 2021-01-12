@@ -81,7 +81,7 @@ $app->post('/api/ciclope_juego', function (Request $request, Response $response)
 
         $stmt = $db->prepare($sql);
 
-        $juego_hash = str_replace(" ", "", $nombre)."_".random_str(5, "abcdefghijkmnpqrstuvwxyz");
+        $juego_hash = strtolower(str_replace(" ", "", $nombre))."_".random_str(5, "abcdefghijkmnpqrstuvwxyz");
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':hash', $juego_hash);
         $stmt->bindParam(':texto_espera', $texto_espera);
