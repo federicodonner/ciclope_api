@@ -2,8 +2,7 @@
 
 // Middleware que verifica la autenticación del cliente
 $authenticate = function ($request, $response, $next) {
-
-  // Verifica que haya un cabezal de autenticación en el request
+    // Verifica que haya un cabezal de autenticación en el request
     $requestHeaders = $request->getHeaders()['HTTP_AUTHORIZATION'];
     if (!$requestHeaders) {
         return messageResponse($response, 'Error de encabezado HTTP', 401);
@@ -25,7 +24,7 @@ $authenticate = function ($request, $response, $next) {
 
     // Si encuentra todo el login ok, pasa el request a la aplicación
     // adjuntándole el id del usuario logueado
-    $usuario_id = $user_found[0]->usuario_id;
+    $usuario_id = $user_found[0]->usuario;
     $request = $request->withAttribute('usuario_id', $usuario_id);
     $response = $next($request, $response);
 
