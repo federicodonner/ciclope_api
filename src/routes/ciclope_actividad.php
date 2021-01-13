@@ -29,10 +29,9 @@ $app->post('/api/ciclope_actividad', function (Request $request, Response $respo
             return messageResponse($response, 'Juego no encontrado, verifica el identificador.', 404);
         }
 
-
+        // Si el usuario no especifica un número de actividad, se ingresa un 1
         if (!$numero) {
-            $db = null;
-            return messageResponse($response, 'Debes especificar un numero de actividad', 403);
+            $numero = 1;
         }
 
         // Si viene una imagen la procesa y la sube
