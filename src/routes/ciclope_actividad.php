@@ -180,9 +180,10 @@ $app->delete('/api/ciclope_actividad/{id}', function (Request $request, Response
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
-
+        // Devuelve el id de la actividad eliminada
+        $actividad->id=$id;
         $db=null;
-        return messageResponse($response, 'Actividad eliminada.', 200);
+        return dataResponse($response, $actividad, 200);
     } catch (PDOException $e) {
         $db = null;
         return messageResponse($response, $e->getMessage(), 500);
