@@ -156,3 +156,35 @@ $app->put('/api/ciclope_actividad/{id}', function (Request $request, Response $r
         return messageResponse($response, $e->getMessage(), 500);
     }
 })->add($authenticate);
+
+$app->delete('/api/ciclope_actividad/{id}', function (Request $request, Response $response) {
+    try {
+        $id = $request->getAttribute('id');
+
+
+        // Verifica que el juego especificado exista
+        $sql = "SELECT id FROM ciclope_actividad WHERE id = $id";
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->query($sql);
+        $actividades = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        if ($actividades == null) {
+            $db = null;
+            return messageResponse($response, 'Actividad no encontrada, verifica el identificador.', 404);
+        }
+
+        // Si estoy acá es porque los campos del request están bien
+        $sql = "DELETE FROM ciclope_actividad WHERE id = $id";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+
+        $db=null;
+        return messageResponse($response, 'Actividad eliminada.', 200);
+    } catch (PDOException $e) {
+        $db = null;
+        return messageResponse($response, $e->getMessage(), 500);
+    }
+})->add($authenticate);
