@@ -17,6 +17,7 @@ require '../src/routes/oauth.php';
 require '../src/routes/ciclope_juego.php';
 require '../src/routes/ciclope_activar.php';
 require '../src/routes/ciclope_registro.php';
+require '../src/routes/ciclope_participante.php';
 require '../src/routes/ciclope_actividad.php';
 require '../src/routes/usuario.php';
 require '../src/routes/cors.php';
