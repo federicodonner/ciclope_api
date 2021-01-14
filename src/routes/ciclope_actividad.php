@@ -37,7 +37,7 @@ $app->post('/api/ciclope_actividad', function (Request $request, Response $respo
         // Si viene una imagen la procesa y la sube
         if (count($uploadedFiles) != 0) {
             $directory = $this->get('upload_directory');
-            $uploadedFile = $uploadedFiles['imagenActividad'];
+            $uploadedFile = $uploadedFiles['archivo'];
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
                 $basename = bin2hex(random_bytes(8));
