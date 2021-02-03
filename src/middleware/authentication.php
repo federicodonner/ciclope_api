@@ -5,13 +5,13 @@ $authenticate = function ($request, $response, $next) {
     // Verifica que haya un cabezal de autenticación en el request
     // El nombre de los cabezales de autorización están cambiados
     // porque el servidor estaba filtrando el cabezal Authorization
-    $requestHeaders = $request->getHeaders()['HTTP_AUTHORIZATION_LUDICAMENTE'];
+    $requestHeaders = $request->getHeaders()['HTTP_AUTHORIZATION'];
     if (!$requestHeaders) {
         return messageResponse($response, 'Error de encabezado HTTP', 401);
     }
 
     // Si el cabezal está disponible, obtiene el token
-    $access_token = $request->getHeaders()['HTTP_AUTHORIZATION_LUDICAMENTE'][0];
+    $access_token = $request->getHeaders()['HTTP_AUTHORIZATION'][0];
     $access_token = explode(" ", $access_token)[1];
     // Si no hay access token, devuelve error
     if (empty($access_token)) {

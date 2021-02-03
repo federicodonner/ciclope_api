@@ -8,6 +8,7 @@ require '../src/auxiliares/funciones.php';
 
 $app = new \Slim\App;
 require '../src/middleware/authentication.php';
+require '../src/middleware/cors.php';
 
 $container = $app->getContainer();
 $container['upload_directory'] = __DIR__ . '/imagenes';
@@ -19,8 +20,10 @@ require '../src/routes/ciclope_activar.php';
 require '../src/routes/ciclope_registro.php';
 require '../src/routes/ciclope_participante.php';
 require '../src/routes/ciclope_actividad.php';
+require '../src/routes/trivia_juego.php';
+require '../src/routes/trivia_pregunta.php';
+require '../src/routes/trivia_respuesta.php';
 require '../src/routes/usuario.php';
-require '../src/routes/cors.php';
-
+require '../src/routes/notfound.php';
 
 $app->run();
